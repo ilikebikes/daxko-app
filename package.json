@@ -11,10 +11,16 @@
   "dependencies": {
     "@emotion/react": "latest",
     "@emotion/styled": "latest",
+    "@mui/icons-material": "^5.1.0",
     "@mui/material": "latest",
+    "express": "^4.17.1",
+    "history": "^5.1.0",
+    "https": "^1.0.0",
     "react": "latest",
     "react-dom": "latest",
-    "react-scripts": "latest"
+    "react-router-dom": "^6.0.1",
+    "react-scripts": "latest",
+    "request": "^2.88.2"
   },
   "browserslist": {
     "production": [
