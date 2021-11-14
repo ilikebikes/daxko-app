@@ -1,52 +1,62 @@
-import * as React from "react";
-import { Box, Typography } from "@mui/material";
-import { Link, Route, Routes } from "react-router-dom";
-import EnhancedTable from "../components/Table";
-import https from "https";
+import * as React from 'react';
+import { Box, Typography } from '@mui/material';
+import https from 'https';
+import EnhancedTable from '../components/Table';
+import Search from '../components/Search';
+import SimpleDialog from '../components/Modal';
 
-export default function Home() {
+const apiKey = 'api_key=InURJ29ywpKYuBQbs09yhWzaxb3Y5B6TZBmHtcJQ';
+const url = 'https://api.nal.usda.gov/fdc/v1';
+
+const Home = function createHome() {
   const [foodList, setFoodList] = React.useState([]);
+  const [searchedFoods, setSearchedFoods] = React.useState([]);
+  const [open, setOpen] = React.useState(true);
 
-  React.useEffect(() => {
-    apiRequest();
-  }, []);
   const apiRequest = async () => {
-    const api_key = "?api_key=InURJ29ywpKYuBQbs09yhWzaxb3Y5B6TZBmHtcJQ";
-    const url = "https://api.nal.usda.gov/fdc/v1";
-    const foodList = "/foods/list";
-    const pageSize = "&pageSize=200";
-    // const nutrients =
-    //   "&nutrients=203&nutrients=205&nutrients=204&nutrients=208&nutrients=269";
-    const request = url + "/foods/list" + api_key + pageSize;
+    const foodPath = '/foods/list';
+    const pageSize = '&pageSize=200';
+    const request = `${url + foodPath}?${apiKey}${pageSize}`;
     let foodListObject = null;
     https.get(request, async (response) => {
-      console.debug("RESPONSE: ", response);
-      response.on("error", (e) => {
-        console.error("Request error: ", e);
+      response.on('error', (e) => {
+        // eslint-disable-next-line
+        console.error('Request error: ', e);
       });
 
-      response.setEncoding("utf8");
-      let body = "";
-      response.on("data", (chunk) => {
-        body = body + chunk;
+      response.setEncoding('utf8');
+      let body = '';
+      response.on('data', (chunk) => {
+        body += chunk;
       });
 
-      response.on("end", () => {
+      response.on('end', () => {
         foodListObject = JSON.parse(body);
         setFoodList(foodListObject);
       });
     });
   };
+  React.useEffect(() => {
+    apiRequest();
+  }, []);
+
   return (
     <Box>
-      <Typography variant="h1" sx={{ textAlign: "center" }}>
+      <Typography variant="h1" sx={{ textAlign: 'center' }}>
         Daxco Foods
       </Typography>
-      {foodList && foodList.length > 0 ? (
-        <EnhancedTable rows={foodList} />
-      ) : (
-        console.debug("nodice")
-      )}
+      {foodList && !searchedFoods.foods && foodList.length > 0 ? (
+        <EnhancedTable rows={foodList} paginationOption={5} />
+      ) : null}
+      {searchedFoods.foods && searchedFoods.foods.length > 0 ? (
+        <EnhancedTable rows={searchedFoods.foods} paginationOption={10} />
+      ) : null}
+      <Search setSearchedFoods={setSearchedFoods} apiKey={apiKey} url={url} setOpen={setOpen} />
+      {searchedFoods.foods && searchedFoods.foods.length > 0 ? (
+        <SimpleDialog data={searchedFoods.foods.slice(0, 10)} open={open} setOpen={setOpen} />
+      ) : null}
     </Box>
   );
-}
+};
+
+export default Home;

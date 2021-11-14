@@ -1,7 +1,6 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Box,
-  Link,
   Paper,
   Table,
   TableBody,
@@ -10,72 +9,66 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  TableSortLabel,
   Toolbar,
   Checkbox,
   IconButton,
   Tooltip,
   FormControlLabel,
   Switch,
-  TextField,
   Typography,
-} from "@mui/material";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import { visuallyHidden } from "@mui/utils";
-import PropTypes from "prop-types";
-import { alpha } from "@mui/material/styles";
-
-/* Creates a row of data */
-function createData(name, fdcid) {
-  return {
-    name,
-    fdcid,
-  };
-}
+} from '@mui/material';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import PropTypes from 'prop-types';
+import { alpha } from '@mui/material/styles';
 
 /* header */
 const headCells = [
   {
-    id: "description",
+    id: 'index',
+    numeric: true,
+    disablePadding: false,
+    label: 'Index',
+  },
+  {
+    id: 'description',
     numeric: false,
     disablePadding: true,
-    label: "Food",
+    label: 'Description',
   },
   {
-    id: "sugar",
+    id: 'sugar',
     numeric: false,
     disablePadding: false,
-    label: "Sugar (g)",
+    label: 'Sugar(g)',
   },
   {
-    id: "protein",
-    numeric: false,
+    id: 'protein',
+    numeric: true,
     disablePadding: false,
-    label: "Protein (g)",
+    label: 'Protein(g)',
   },
   {
-    id: "fat",
-    numeric: false,
+    id: 'fat',
+    numeric: true,
     disablePadding: false,
-    label: "Fat (g)",
+    label: 'Fat(g)',
   },
   {
-    id: "carbs",
-    numeric: false,
+    id: 'carbs',
+    numeric: true,
     disablePadding: false,
-    label: "Carbs (g)",
+    label: 'Carbs(g)',
   },
   {
-    id: "Calories",
-    numeric: false,
+    id: 'calories',
+    numeric: true,
     disablePadding: false,
-    label: "Calories (g)",
+    label: 'Calories(g)',
   },
 ];
 
 /* Table head creation */
-function EnhancedTableHead(props) {
+const EnhancedTableHead = function createEnhancedTableHead(props) {
   const { onSelectAllClick, numSelected, rowCount } = props;
 
   return (
@@ -88,15 +81,15 @@ function EnhancedTableHead(props) {
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
             inputProps={{
-              "aria-label": "select all food items",
+              'aria-label': 'select all food items',
             }}
           />
         </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "normal"}
+            align={headCell.numeric ? 'right' : 'left'}
+            padding={headCell.disablePadding ? 'none' : 'normal'}
           >
             {headCell.label}
           </TableCell>
@@ -104,16 +97,15 @@ function EnhancedTableHead(props) {
       </TableRow>
     </TableHead>
   );
-}
+};
 
 EnhancedTableHead.propTypes = {
   numSelected: PropTypes.number.isRequired,
   onSelectAllClick: PropTypes.func.isRequired,
   rowCount: PropTypes.number.isRequired,
 };
-const EnhancedTableToolbar = (props) => {
+const EnhancedTableToolbar = function createEnhancedTableToolbar(props) {
   const { numSelected } = props;
-
   return (
     <Toolbar
       sx={{
@@ -121,29 +113,16 @@ const EnhancedTableToolbar = (props) => {
         pr: { xs: 1, sm: 1 },
         ...(numSelected > 0 && {
           bgcolor: (theme) =>
-            alpha(
-              theme.palette.primary.main,
-              theme.palette.action.activatedOpacity
-            ),
+            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
         }),
       }}
     >
       {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
+        <Typography sx={{ flex: '1 1 100%' }} color="inherit" variant="subtitle1" component="div">
           {numSelected} selected
         </Typography>
       ) : (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
+        <Typography sx={{ flex: '1 1 100%' }} variant="h6" id="tableTitle" component="div">
           Food Items
         </Typography>
       )}
@@ -163,26 +142,37 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-function handleSearch() {
-  return <Typography> TESTING</Typography>;
-}
-
-const defaultRows = [createData("default", 123)];
-
-export default function EnhancedTable(props) {
-  const rows = props.rows.map((row) => {
-    let sugar, protein, carbs, fat, calories;
+const EnhancedTable = function createTable(props) {
+  const { rows, paginationOption } = props;
+  const dataRows = rows.map((row) => {
+    let sugar;
+    let protein;
+    let carbs;
+    let fat;
+    let calories;
     row.foodNutrients.forEach((nutrient) => {
-      if (nutrient.number === "203") {
+      // eslint-disable-next-line
+      console.debug('NUTRIENT: ', nutrient);
+      if (nutrient.number === '203') {
         protein = nutrient.amount;
-      } else if (nutrient.number === "204") {
+      } else if (nutrient.nutrientNumber === '203') {
+        protein = nutrient.value;
+      } else if (nutrient.number === '204') {
         fat = nutrient.amount;
-      } else if (nutrient.number === "205") {
+      } else if (nutrient.nutrientNumber === '204') {
+        fat = nutrient.value;
+      } else if (nutrient.number === '205') {
         carbs = nutrient.amount;
-      } else if (nutrient.number === "208") {
+      } else if (nutrient.nutrientNumber === '205') {
+        carbs = nutrient.value;
+      } else if (nutrient.number === '208') {
         calories = nutrient.amount;
-      } else if (nutrient.number === "269") {
+      } else if (nutrient.nutrientNumber === '208') {
+        calories = nutrient.value;
+      } else if (nutrient.number === '269') {
         sugar = nutrient.amount;
+      } else if (nutrient.nutrientNumber === '269') {
+        sugar = nutrient.value;
       }
     });
     return { ...row, protein, fat, carbs, calories, sugar };
@@ -190,23 +180,23 @@ export default function EnhancedTable(props) {
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(paginationOption);
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.description);
+      const newSelecteds = dataRows.map((n, index) => index);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, index) => {
+    const selectedIndex = selected.indexOf(index);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, index);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -214,7 +204,7 @@ export default function EnhancedTable(props) {
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
+        selected.slice(selectedIndex + 1),
       );
     }
 
@@ -234,44 +224,43 @@ export default function EnhancedTable(props) {
     setDense(event.target.checked);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
+  const isSelected = (index) => selected.indexOf(index) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - dataRows.length) : 0;
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Paper sx={{ width: "100%", mb: 2 }}>
+    <Box sx={{ width: '100%' }}>
+      <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
-            sx={{ minWidth: 750 }}
+            sx={{ width: '100%' }}
             aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
+            size={dense ? 'medium' : 'large'}
           >
             <EnhancedTableHead
               numSelected={selected.length}
               onSelectAllClick={handleSelectAllClick}
-              rowCount={rows.length}
+              rowCount={dataRows.length}
             />
             <TableBody>
               {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.slice().sort(getComparator(order, orderBy)) */}
-              {rows
+              {dataRows
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.description);
+                  const isItemSelected = isSelected(index);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.description)}
+                      onClick={(event) => handleClick(event, index)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.description}
+                      key={row.fdcId}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -279,33 +268,21 @@ export default function EnhancedTable(props) {
                           color="primary"
                           checked={isItemSelected}
                           inputProps={{
-                            "aria-labelledby": labelId,
+                            'aria-labelledby': labelId,
                           }}
                         />
                       </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
-                        {row.description}
+                      <TableCell align="center">{index}</TableCell>
+                      <TableCell component="th" id={labelId} scope="row" padding="none">
+                        {row.brandOwner
+                          ? `${`${row.brandOwner} ${row.description}`}`
+                          : row.description}
                       </TableCell>
-                      {isItemSelected ? (
-                        <TableCell align="right">{row.sugar}</TableCell>
-                      ) : null}
-                      {isItemSelected ? (
-                        <TableCell align="right">{row.protein}</TableCell>
-                      ) : null}
-                      {isItemSelected ? (
-                        <TableCell align="right">{row.fat}</TableCell>
-                      ) : null}
-                      {isItemSelected ? (
-                        <TableCell align="right">{row.carbs}</TableCell>
-                      ) : null}
-                      {isItemSelected ? (
-                        <TableCell align="right">{row.calories}</TableCell>
-                      ) : null}
+                      {isItemSelected ? <TableCell align="right">{row.sugar}</TableCell> : null}
+                      {isItemSelected ? <TableCell align="right">{row.protein}</TableCell> : null}
+                      {isItemSelected ? <TableCell align="right">{row.fat}</TableCell> : null}
+                      {isItemSelected ? <TableCell align="right">{row.carbs}</TableCell> : null}
+                      {isItemSelected ? <TableCell align="right">{row.calories}</TableCell> : null}
                     </TableRow>
                   );
                 })}
@@ -324,7 +301,7 @@ export default function EnhancedTable(props) {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={dataRows.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -337,4 +314,10 @@ export default function EnhancedTable(props) {
       />
     </Box>
   );
-}
+};
+EnhancedTable.propTypes = {
+  rows: PropTypes.arrayOf(PropTypes.object).isRequired,
+  paginationOption: PropTypes.number.isRequired,
+};
+
+export default EnhancedTable;

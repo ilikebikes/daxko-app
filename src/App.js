@@ -1,11 +1,10 @@
-import * as React from "react";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import Copyright from "./components/Copyright";
-import { Routes, Route } from "react-router-dom";
-import Home from "./routes/Home";
+import * as React from 'react';
+import Container from '@mui/material/Container';
+import { Routes, Route } from 'react-router-dom';
+import Copyright from './components/Copyright';
+import Home from './routes/Home';
 
-export default function App() {
+const App = function createApp() {
   return (
     <Container maxWidth="md">
       <Routes>
@@ -14,4 +13,6 @@ export default function App() {
       <Copyright />
     </Container>
   );
-}
+};
+
+export default App;
