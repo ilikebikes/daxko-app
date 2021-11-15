@@ -17,16 +17,22 @@ const Cart = function createCart(props) {
       toRender.push(foodList[elem]);
     });
   }
-  const enhancedRender = enhanceData(toRender);
+
+  const [enhancedRender, setEnhanced] = React.useState(enhanceData(toRender));
+
   const calorieTotal = enhancedRender.reduce((acc, item) => acc + item.calories, 0);
   return (
     <Box>
       <Box>
-        <Typography variant="h3">Your Cart</Typography>
+        <Box sx={{ textAlign: 'center' }}>
+          <Typography variant="h3">Your Cart</Typography>
+        </Box>
         {toRender.length === 0 ? (
           <p>No items in cart.</p>
         ) : (
-          enhancedRender.map((item) => <CartItem item={item} />)
+          enhancedRender.map((item) => (
+            <CartItem item={item} key={item.fdcId} setEnhanced={setEnhanced} />
+          ))
         )}
       </Box>
       <Box>
@@ -35,9 +41,5 @@ const Cart = function createCart(props) {
     </Box>
   );
 };
-/*
-{cartItems.map((item) => (
-  <Typography>{item.fdcId}</Typography>
-))}
-*/
+
 export default Cart;

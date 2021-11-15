@@ -48,8 +48,6 @@ const Home = function createHome() {
     setOpenDrawer(true);
   };
 
-  // eslint-disable-next-line
-  console.debug(cartItems);
   return (
     <Box>
       <Typography variant="h1" sx={{ textAlign: 'center' }}>
