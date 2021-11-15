@@ -5,7 +5,7 @@
     "allowImportExportEverywhere": false,
     "codeFrame": false
   },
-  "extends": ["eslint-config-airbnb", "eslint-config-prettier"],
+  "extends": [],
   "env": {
     "browser": true,
     "jest": true
