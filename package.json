@@ -43,7 +43,6 @@
     ]
   },
   "devDependencies": {
-    "eslint-config-prettier": "^8.3.0",
-    "react-scripts": "latest"
+    "eslint-config-prettier": "^8.3.0"
   }
 }
