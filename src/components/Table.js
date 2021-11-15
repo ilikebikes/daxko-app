@@ -246,7 +246,7 @@ const EnhancedTable = function createTable(props) {
           <Table
             sx={{ width: '100%' }}
             aria-labelledby="tableTitle"
-            size={dense ? 'medium' : 'large'}
+            size={dense ? 'small' : 'large'}
           >
             <EnhancedTableHead
               numSelected={selected.length}
