@@ -51,7 +51,7 @@ const Home = function createHome() {
   return (
     <Box>
       <Typography variant="h1" sx={{ textAlign: 'center' }}>
-        Daxco Foods
+        Daxko Foods
       </Typography>
       <Box sx={{ textAlign: 'right', paddingRight: '8px' }}>
         <IconButton onClick={handleOpenDrawer}>

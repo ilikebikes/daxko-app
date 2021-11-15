@@ -1,4 +1,4 @@
-# Daxco App
+# daxko App
 
 Install it and run:
 
