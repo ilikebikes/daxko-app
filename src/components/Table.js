@@ -105,7 +105,10 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 const EnhancedTableToolbar = function createEnhancedTableToolbar(props) {
-  const { numSelected } = props;
+  const { numSelected, setCartItems, selectedRows } = props;
+  const handleCartAdd = () => {
+    setCartItems(selectedRows);
+  };
   return (
     <Toolbar
       sx={{
@@ -129,7 +132,7 @@ const EnhancedTableToolbar = function createEnhancedTableToolbar(props) {
       {numSelected === 1 ? <Typography /> : null}
       {numSelected > 0 ? (
         <Tooltip title="Add">
-          <IconButton>
+          <IconButton onClick={handleCartAdd}>
             <AddShoppingCartIcon />
           </IconButton>
         </Tooltip>
@@ -141,18 +144,14 @@ const EnhancedTableToolbar = function createEnhancedTableToolbar(props) {
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
-
-const EnhancedTable = function createTable(props) {
-  const { rows, paginationOption } = props;
-  const dataRows = rows.map((row) => {
-    let sugar;
-    let protein;
-    let carbs;
-    let fat;
-    let calories;
+export const enhanceData = function createEnhancedData(rows) {
+  return rows.map((row) => {
+    let sugar = 0;
+    let protein = 0;
+    let carbs = 0;
+    let fat = 0;
+    let calories = 0;
     row.foodNutrients.forEach((nutrient) => {
-      // eslint-disable-next-line
-      console.debug('NUTRIENT: ', nutrient);
       if (nutrient.number === '203') {
         protein = nutrient.amount;
       } else if (nutrient.nutrientNumber === '203') {
@@ -175,8 +174,13 @@ const EnhancedTable = function createTable(props) {
         sugar = nutrient.value;
       }
     });
+
     return { ...row, protein, fat, carbs, calories, sugar };
   });
+};
+const EnhancedTable = function createTable(props) {
+  const { rows, paginationOption, setCartItems } = props;
+  const dataRows = enhanceData(rows);
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
@@ -232,7 +236,12 @@ const EnhancedTable = function createTable(props) {
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar
+          numSelected={selected.length}
+          setCartItems={setCartItems}
+          selectedRows={selected}
+          dataRows={dataRows}
+        />
         <TableContainer>
           <Table
             sx={{ width: '100%' }}
@@ -318,6 +327,7 @@ const EnhancedTable = function createTable(props) {
 EnhancedTable.propTypes = {
   rows: PropTypes.arrayOf(PropTypes.object).isRequired,
   paginationOption: PropTypes.number.isRequired,
+  setCartItems: PropTypes.func.isRequired,
 };
 
 export default EnhancedTable;

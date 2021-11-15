@@ -24,8 +24,8 @@ const SimpleDialog = function createSimpleDialog(props) {
           <TableHead>
             <TableRow>
               <TableCell>Description</TableCell>
-              <TableCell align="right">Additional Description</TableCell>
-              <TableCell align="right">Brand Owner</TableCell>
+              <TableCell align="center">Additional Description</TableCell>
+              <TableCell align="center">Brand Owner</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -34,8 +34,8 @@ const SimpleDialog = function createSimpleDialog(props) {
                 <TableCell component="th" scope="row">
                   {row.description}
                 </TableCell>
-                <TableCell align="right">n/a</TableCell>
-                <TableCell align="right">{row.brandOwner}</TableCell>
+                <TableCell align="center">n/a</TableCell>
+                <TableCell align="center">{row.brandOwner}</TableCell>
               </TableRow>
             ))}
           </TableBody>
