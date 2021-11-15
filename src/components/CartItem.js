@@ -10,7 +10,7 @@ const CartItem = function createCartItem(props) {
     setEnhanced((prevArray) => {
       const remove = prevArray.findIndex(test);
 
-      if (remove === 0) return [...prevArray.pop()];
+      if (remove === 0 && prevArray.length === 1) return [];
       prevArray.splice(remove, 1);
       return [...prevArray];
     });
